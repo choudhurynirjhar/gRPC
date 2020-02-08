@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\population.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\clientcount.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

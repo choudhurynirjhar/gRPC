@@ -40,6 +40,7 @@ namespace GrpcDemo.Server
             });
 
             app.UseEndpoints(e => e.MapGrpcService<PopulationService>());
+            app.UseEndpoints(e => e.MapGrpcService<ClientCountProviderService>());
         }
     }
 }
