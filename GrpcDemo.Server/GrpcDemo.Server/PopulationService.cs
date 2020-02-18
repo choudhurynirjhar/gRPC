@@ -1,5 +1,7 @@
 ﻿using Grpc.Core;
 using GrpcPopulation;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GrpcDemo.Server
@@ -13,12 +15,16 @@ namespace GrpcDemo.Server
             this.statePopulationProvider = statePopulationProvider;
         }
 
-        public override Task<PopulationResponse> GetPopulation(
-            PopulationRequest populationRequest, 
-            ServerCallContext serverCallContext)
+        public override async Task<PopulationResponse> GetPopulation(IAsyncStreamReader<PopulationRequest> requestStream, ServerCallContext context)
         {
-            var count = statePopulationProvider.Get(populationRequest.State);
-            return Task.FromResult(new PopulationResponse { Count = count.ToString() });
+            var statePopulations = new List<long>();
+            while (await requestStream.MoveNext())
+            {
+                var populationRequest = requestStream.Current;
+                statePopulations.Add(statePopulationProvider.Get(populationRequest.State));
+            }
+
+            return new PopulationResponse { Count = statePopulations.Sum() };
         }
     }
 }

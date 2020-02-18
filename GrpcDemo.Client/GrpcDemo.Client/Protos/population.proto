@@ -3,7 +3,7 @@
 option csharp_namespace = "GrpcPopulation";
 
 service PopulationProvider {
-	rpc GetPopulation (PopulationRequest) returns (PopulationResponse);
+	rpc GetPopulation (stream PopulationRequest) returns (PopulationResponse);
 }
 
 message PopulationRequest{
@@ -11,5 +11,5 @@ message PopulationRequest{
 }
 
 message PopulationResponse{
-	string Count = 1;
+	int64 Count = 1;
 }
